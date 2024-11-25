@@ -93,11 +93,31 @@ The file is symmetrically encrypted/decrypted by exchanging secret key which is 
 All steps are made manually with openssl at the terminal of each computer.
 
 **Answer 1**:
-## 1. Create 2 Docker containers representing two computers (VM1 and VM2).
+## 1. Create a file 
 ```bash
-docker run -it --name docker-machine-1 ubuntu bash
-docker run -it --name docker-machine-2 ubuntu bash
+echo "This is a secret message." > message.txt
 ```
+## 2. Generate a 2048-bit RSA private key  used by the `receiver`
+- Generate the private key
+```bash
+openssl genrsa -out private_key.pem 2048
+```
+![Screenshot 2024-11-25 210738](https://github.com/user-attachments/assets/5155f57e-41a6-4fd2-b88c-73857b9e9c93)
+- Extract public key
+```bash
+openssl rsa -in private_key.pem -pubout -out public_key.pem
+```
+![Screenshot 2024-11-25 211300](https://github.com/user-attachments/assets/c8d273eb-0b37-4124-9fe0-608ae3549ddc)
+## 3. The `receiver` shares the public_key.pem file with the `sender` using `Netcat`
+-In `receiver`:
+```bash
+nc 172.17.0.3 1234 <  public_key.pem
+```
+-In `sender`:
+```bash
+nc -l -p 1234 >  public_key.pem
+```
+
 
 # Task 3: Firewall configuration
 **Question 1**:
