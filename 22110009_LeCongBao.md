@@ -69,13 +69,20 @@ nc -l -p 12345 > received_plaintext.txt.hash
 - In `sender`
 ```bash
 nc 172.17.0.2 12345 < plaintext.txt
-nc 172.17.0.2 12345 < file.txt.hash
+nc 172.17.0.2 12345 < plaintext.txt.hash
 ```
 ## 4: Verify the received files
 step 1: Generate hash of the received files
 ```bash
 openssl sha256 plaintext.txt
 ```
+![Screenshot 2024-11-25 170014](https://github.com/user-attachments/assets/3650b9b7-c324-41d3-a808-a6dc53bf1c67)
+
+step 2: Open the Hash file
+```bash
+nano received_plaintext.txt.hash
+```
+![Screenshot 2024-11-25 170446](https://github.com/user-attachments/assets/24a7f9b9-6d65-4a06-bdf8-6dc0eba71ab2)
 
 
 # Task 2: Transfering encrypted file and decrypt it with hybrid encryption. 
