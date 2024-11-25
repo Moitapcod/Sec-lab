@@ -21,6 +21,26 @@ step 3: Check list of containers running
 docker ps
 ```
 ![Screenshot 2024-11-25 153154](https://github.com/user-attachments/assets/a8e7ec85-8be2-456c-9605-3c0e94503008)
+step 4: Start the containers interactively
+```bash
+docker start -i sender
+docker start -i receiver
+```
+step 5: Inspect the containers
+```bash
+docker inspect sender | findstr "IPAddress"
+docker inspect receiver | findstr "IPAddress"
+```
+- We will have IP of `sender` and `receiver`
+![Screenshot 2024-11-25 160256](https://github.com/user-attachments/assets/c964bef2-e761-4ac5-92bf-aa8629ad21e4)
+
+## 2: Create a plain text file
+step 1: create a plain text file in `sender`
+```bash
+echo "This is simple text file" > plaintext.txt
+```
+![Screenshot 2024-11-25 160256](https://github.com/user-attachments/assets/92b90481-7d92-4df8-9ad0-e6468bc81939)
+step 2: Creat a hash file by openssl
 
 # Task 2: Transfering encrypted file and decrypt it with hybrid encryption. 
 **Question 1**:
