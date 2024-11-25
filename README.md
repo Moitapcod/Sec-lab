@@ -17,7 +17,8 @@ echo "This is a sample file for testing integrity and authenticity." > plain.txt
 docker network create --driver bridge my_network
 docker network ls
 ```
-![image]("C:\Users\Le Cong Bao\Downloads\Screenshot 2024-11-25 094926.png")
+(![Screenshot 2024-11-25 094926](https://github.com/user-attachments/assets/d7eaded2-6420-4618-a6a8-081e8251310b)
+
 
 
 ## 3. Ping 2 virtual computers container1 và container2
