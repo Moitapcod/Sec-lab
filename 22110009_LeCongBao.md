@@ -6,33 +6,22 @@ Using openssl to implementing measures manually to ensure file integerity and au
 then veryfing at receiving side. 
 
 **Answer 1**:
-## 1. Create a text file named `plain.txt`:
-*First, we write a message and save it in a text file:*<br>
-
-```sh
-echo "This is a sample file for testing integrity and authenticity." > plain.txt
-```
-## 2. Create a Bridge Network between 2 container
+## 1. Use Docker to pull Ubuntu and create 2 computers
+step 1: pull Ubutu
 ```bash
-docker network create --driver bridge my_network
-docker network ls
+docker pull ubuntu
 ```
-![Screenshot 2024-11-25 094926](https://github.com/user-attachments/assets/d7eaded2-6420-4618-a6a8-081e8251310b)
-
-- `docker network ls` : kiểm tra xem mạng đã được tạo chưa
-## 3. Ping 2 virtual computers container1 (sender) và container2 (receiver)
+step 2: Create 2 computers from Ubuntu
 ```bash
-docker exec -it container1 bash
-ping container2
+docker run --name sender -it ubuntu
+docker run --name receiver -it ubuntu
 ```
-## 4. In container1 (sender) create a hash
+step 3: Check list of containers running 
 ```bash
-openssl enc -sha256 -in plain.txt -out plain.txt.sha256
+docker ps
 ```
+![Screenshot 2024-11-25 153154](https://github.com/user-attachments/assets/a8e7ec85-8be2-456c-9605-3c0e94503008)
 
-
-Verify current folder for newly created file
- 
 # Task 2: Transfering encrypted file and decrypt it with hybrid encryption. 
 **Question 1**:
 Conduct transfering a file (deliberately choosen by you) between 2 computers. 
