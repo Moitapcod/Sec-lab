@@ -21,6 +21,7 @@ step 3: Check list of containers running
 docker ps
 ```
 ![Screenshot 2024-11-25 153154](https://github.com/user-attachments/assets/a8e7ec85-8be2-456c-9605-3c0e94503008)
+
 step 4: Start the containers interactively
 ```bash
 docker start -i sender
