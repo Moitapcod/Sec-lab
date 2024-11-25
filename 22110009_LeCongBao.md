@@ -118,7 +118,79 @@ nc 172.17.0.2 12345 <  public_key.pem
 ```bash
 nc -l -p 12345 >  public_key.pem
 ```
+## 4. Create and Encrypt Symmetric Key on `sender`
+- Create a symmetric AES key (32 bytes for AES-256):
+```bash
+oppenssl rand -base64 32 > symmetric_key.txt
+```
+![Screenshot 2024-11-25 220007](https://github.com/user-attachments/assets/4ee291a7-b14e-4b92-8497-bb1ccca9d888)
 
+- Encrypt the symmetric key using Computer B’s public RSA key. The Sender encrypts the symmetric key using the Receiver's public RSA key. The encrypted symmetric key is saved to encrypted_key.bin.
+```bash
+openssl pkeyutl -encrypt -inkey public_key.pem -pubin -in symmetric_key.txt -out encrypted_key.bin
+```
+- Note:
++ `openssl pkeyutl`: This command is used for public key cryptography operations like encryption and decryption.
++ `-encrypt`: Specifies that the operation is encryption.
++ `-inkey public_key.pem`: Specifies the public key file (public_key.pem) used for encryption.
++ `-pubin`: Indicates that the input key is a public key (as opposed to a private key).
+![Screenshot 2024-11-25 220845](https://github.com/user-attachments/assets/eba7ef1e-6690-4875-bc42-ac9f7e7491f9)
+- Encrypt the file message.txt using the symmetric AES key. The Sender encrypts message.txt using AES-256-CBC with the symmetric key stored in symmetric_key.txt. The encrypted file is saved as encrypted_file.bin.
+```bash
+openssl enc -aes-256-cbc -salt -in message.txt -out encrypted_file.bin -pass file:symmetric_key.txt -pbkdf2
+```
+- Note:
++ `-aes-256-cbc`: Specifies the encryption algorithm (AES-256-CBC)
++ `-salt`: Adds a salt to the encryption process to prevent dictionary attacks and enhance security by ensuring the output differs even with identical inputs.
++ `-pbkdf2`: Uses PBKDF2 (Password-Based Key Derivation Function 2) to derive a secure key from the passphrase. This makes the encryption more secure by applying multiple iterations of a cryptographic hash function.
+![Screenshot 2024-11-25 223023](https://github.com/user-attachments/assets/b38a4d7c-583c-4710-8a1a-72b5c2631e88)
+## 5. The `sender` send both `encrypted_key.bin` and `encrypted_file.bin` to the `receiver`
+- In `receiver`:
+```bash
+nc -l -p 12345 > encrypted_key.bin
+nc -l -p 12345 > encrypted_file.bin
+```
+- The Receiver listens on port 1234 for both the encrypted symmetric key (encrypted_key.bin) and the encrypted file (encrypted_file.bin)
+- In `sender`:
+```bash
+nc 172.17.0.3 12345 < encrypted_key.bin
+nc 172.17.0.3 12345 < encrypted_file.bin
+```
+- The Sender sends both the encrypted_key.bin and encrypted_file.bin to the Receiver over netcat to the IP address 172.17.0.3 on port 12345
+## 6. Decrypt Symmetric Key on `receiver`
+```bash
+openssl pkeyutl -decrypt -inkey private_key.pem -in encrypted_key.bin -out symmetric_key.txt
+```
+- The `receiver` uses their private RSA key to decrypt the `encrypted_key.bin file`, retrieving the symmetric key and saving it to `symmetric_key.txt`
+- Note:
++ `openssl pkeyutl`: This command is used for public key cryptography operations, such as encryption, decryption, and signing.
++ `-decrypt`: This will decrypt the data that was previously encrypted using a public key.
++ `-inkey private_key.pem`: Specifies the private key `private_key.pem` used to decrypt the data.
++ `-in encrypted_key.bin`: The input file `encrypted_key.bin` contains the encrypted data
++ `-out symmetric_key.txt`: Specifies the output file `symmetric_key.txt` where the decrypted data (the original symmetric key) will be saved.
+![Screenshot 2024-11-25 230737](https://github.com/user-attachments/assets/ef0f7775-a308-4527-9684-19934da3cde6)
+## 7. Decrypt the File on `reciver`
+```bash
+openssl enc -d -aes-256-cbc -in encrypted_file.bin -out decrypted_example.txt -pass file:symmetric_key.txt -pbkdf2
+```
+- Note:
++ The `receiver` decrypts the encrypted file encrypted_file.bin using the symmetric key stored in symmetric_key.txt and saves the decrypted content to decrypted_example.txt.
++ `openssl enc`: This command is used for symmetric encryption and decryption operations using OpenSSL, where the same key is used for both encryption and decryption.
++ `-d`: Specifies that the operation is decryption. Without this option, the command would default to encryption.
++ `-aes-256-cbc`: Specifies the encryption algorithm and mode
++ `-pass file:symmetric_key.txt`: Specifies the password or passphrase for decryption, which is read from the file `symmetric_key.txt`.
++ `-pbkdf2`: Uses PBKDF2 (Password-Based Key Derivation Function 2) to securely derive the encryption key from the passphrase.
+  
+```bash
+nano decrypted_example.txt
+```
+![Screenshot 2024-11-25 231432](https://github.com/user-attachments/assets/f2c86ac3-315f-489e-b855-358562401e62)
+
+## Conclusion
+- in this task, i transfered an encrypted file between two computers using hybrid encryption
+- RSA Keys: The receiver generates an RSA key pair. The public key is shared with the sender to encrypt the symmetric key.
+- Symmetric Key Encryption: The sender generates a symmetric AES key, encrypts it with the receiver's public RSA key, and encrypts the file using AES-256.
+- The `receiver` successfully decrypts both the symmetric key and the file, retrieving the original message "This is a secret message."
 
 # Task 3: Firewall configuration
 **Question 1**:
