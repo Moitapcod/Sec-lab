@@ -84,7 +84,8 @@ nano received_plaintext.txt.hash
 ```
 ![Screenshot 2024-11-25 170446](https://github.com/user-attachments/assets/24a7f9b9-6d65-4a06-bdf8-6dc0eba71ab2)
 
-
+### Conclusion
+i have tranfered the files between 2 computers using Netcat and verified the content of the files
 # Task 2: Transfering encrypted file and decrypt it with hybrid encryption. 
 **Question 1**:
 Conduct transfering a file (deliberately choosen by you) between 2 computers. 
