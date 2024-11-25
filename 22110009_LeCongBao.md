@@ -32,6 +32,7 @@ docker inspect sender | findstr "IPAddress"
 docker inspect receiver | findstr "IPAddress"
 ```
 - We will have IP of `sender` and `receiver`
+- 
 ![Screenshot 2024-11-25 160256](https://github.com/user-attachments/assets/c964bef2-e761-4ac5-92bf-aa8629ad21e4)
 
 ## 2: Create a plain text file
@@ -43,13 +44,15 @@ step 2: create a plain text file in `sender`
 ```bash
 echo "This is simple text file" > plaintext.txt
 ```
-![Screenshot 2024-11-25 160256](https://github.com/user-attachments/assets/92b90481-7d92-4df8-9ad0-e6468bc81939)
+![Screenshot 2024-11-25 161349](https://github.com/user-attachments/assets/b69f3edb-cc78-46a0-b526-dd03e71f73d9)
+
 
 step 3: Creat a hash file by openssl
 ```bash
 openssl sha256 plaintext.txt > plaintext.txt.hash
 ```
-![Screenshot 2024-11-25 160256](https://github.com/user-attachments/assets/71a383f8-b879-4494-aa37-7a7f4543255d)
+![Screenshot 2024-11-25 161858](https://github.com/user-attachments/assets/f7952769-c223-47a6-81d9-079c826a697c)
+
 
 ## 3: Tranfer file between two computers using Netcat
 step 1: Install Netcat
@@ -61,7 +64,8 @@ step 2: Set up `receiver` to listen for incoming files
 nc -l -p 12345 > received_plaintext.txt
 nc -l -p 12345 > received_plaintext.txt.hash
 ```
-![Screenshot 2024-11-25 160256](https://github.com/user-attachments/assets/a27a8a3e-727a-48cb-a81c-842be4a1fbf5)
+![Screenshot 2024-11-25 163439](https://github.com/user-attachments/assets/64d987ae-7c1d-4a5d-bb09-9e6be859dd9f)
+
 
 
 
