@@ -32,7 +32,7 @@ docker inspect sender | findstr "IPAddress"
 docker inspect receiver | findstr "IPAddress"
 ```
 - We will have IP of `sender` and `receiver`
-- 
+  
 ![Screenshot 2024-11-25 160256](https://github.com/user-attachments/assets/c964bef2-e761-4ac5-92bf-aa8629ad21e4)
 
 ## 2: Create a plain text file
