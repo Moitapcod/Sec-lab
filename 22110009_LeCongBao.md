@@ -112,11 +112,11 @@ openssl rsa -in private_key.pem -pubout -out public_key.pem
 ## 3. The `receiver` shares the public_key.pem file with the `sender` using `Netcat`
 -In `receiver`:
 ```bash
-nc 172.17.0.3 1234 <  public_key.pem
+nc 172.17.0.2 12345 <  public_key.pem
 ```
 -In `sender`:
 ```bash
-nc -l -p 1234 >  public_key.pem
+nc -l -p 12345 >  public_key.pem
 ```
 
 
