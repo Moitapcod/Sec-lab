@@ -12,6 +12,22 @@ then veryfing at receiving side.
 ```sh
 echo "This is a sample file for testing integrity and authenticity." > plain.txt
 ```
+## 2. Create a Bridge Network between 2 container
+```bash
+docker network create --driver bridge my_network
+docker network ls
+```
+
+
+## 3. Ping 2 virtual computers container1 và container2
+```bash
+docker exec -it container1 bash
+ping container2
+```
+## 4. In container1 (sender) create a hash
+```bash
+
+
 Verify current folder for newly created file
  
 # Task 2: Transfering encrypted file and decrypt it with hybrid encryption. 
