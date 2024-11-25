@@ -35,12 +35,35 @@ docker inspect receiver | findstr "IPAddress"
 ![Screenshot 2024-11-25 160256](https://github.com/user-attachments/assets/c964bef2-e761-4ac5-92bf-aa8629ad21e4)
 
 ## 2: Create a plain text file
-step 1: create a plain text file in `sender`
+step 1: Dowload openssl 
+```bash
+apt install openssl -y
+```
+step 2: create a plain text file in `sender`
 ```bash
 echo "This is simple text file" > plaintext.txt
 ```
 ![Screenshot 2024-11-25 160256](https://github.com/user-attachments/assets/92b90481-7d92-4df8-9ad0-e6468bc81939)
-step 2: Creat a hash file by openssl
+
+step 3: Creat a hash file by openssl
+```bash
+openssl sha256 plaintext.txt > plaintext.txt.hash
+```
+![Screenshot 2024-11-25 160256](https://github.com/user-attachments/assets/71a383f8-b879-4494-aa37-7a7f4543255d)
+
+## 3: Tranfer file between two computers using Netcat
+step 1: Install Netcat
+```bash
+sudo apt install netcat
+```
+step 2: Set up `receiver` to listen for incoming files
+```bash
+nc -l -p 12345 > received_plaintext.txt
+nc -l -p 12345 > received_plaintext.txt.hash
+```
+![Screenshot 2024-11-25 160256](https://github.com/user-attachments/assets/a27a8a3e-727a-48cb-a81c-842be4a1fbf5)
+
+
 
 # Task 2: Transfering encrypted file and decrypt it with hybrid encryption. 
 **Question 1**:
